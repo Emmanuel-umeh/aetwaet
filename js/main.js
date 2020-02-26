@@ -45,6 +45,7 @@ payable contract AeTwaet =
   // Tip a twaet
   payable stateful entrypoint tipTwaet(id': string) =
     let twaet = getTwaet(id')
+    require(twaet.writerAddress != Call.caller, "You cannot tip your own twaet")
     Chain.spend(twaet.writerAddress, Call.value)
     let newTotalTips = twaet.totalTips + Call.value
     let newTipsCount = twaet.tipsCount + 1
